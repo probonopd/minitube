@@ -27,7 +27,6 @@ script:
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
   - ./linuxdeployqt*.AppImage ./appdir/usr/bin/minitube -bundle-non-qt-libs
   - # "To be able to actually watch videos you need a working Phonon setup" - whatever this means
-  - mkdir -p usr/lib/x86_64-linux-gnu/qt5/plugins/
   - cp -r /usr/lib/x86_64-linux-gnu/qt5/plugins/phonon4qt5_backend ./usr/plugins/
   - ./linuxdeployqt*.AppImage ./appdir/usr/bin/minitube -appimage 
   - curl --upload-file ./Minitube*.AppImage https://transfer.sh/Minitube-git.$(git rev-parse --short HEAD)-x86_64.AppImage 
