@@ -8,7 +8,7 @@ before_install:
     - sudo apt-get update -qq
     
 install: 
-    - sudo apt-get -y install qt58base qt58declarative libphonon4qt5-dev libqt5sql5-sqlite qt58translations
+    - sudo apt-get -y install qt58base qt58declarative libphonon4qt5-dev libqt5sql5-sqlite qt58tools
     - source /opt/qt58/bin/qt58-env.sh
 
 script:
