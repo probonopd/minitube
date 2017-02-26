@@ -28,5 +28,6 @@ script:
   - ./linuxdeployqt*.AppImage ./appdir/usr/bin/minitube -bundle-non-qt-libs
   - # "To be able to actually watch videos you need a working Phonon setup" - whatever this means
   - cp -r /usr/lib/x86_64-linux-gnu/qt5/plugins/phonon4qt5_backend ./usr/plugins/
+  - sed -i -e 's|/usr|/xxx|g' ./usr/lib/libphonon4qt5.so.4 # Otherwise it doesn't load from qt_prfxpath; FIXME
   - ./linuxdeployqt*.AppImage ./appdir/usr/bin/minitube -appimage 
   - curl --upload-file ./Minitube*.AppImage https://transfer.sh/Minitube-git.$(git rev-parse --short HEAD)-x86_64.AppImage 
