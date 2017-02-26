@@ -8,10 +8,11 @@ before_install:
     - sudo apt-get update -qq
     
 install: 
-    - sudo apt-get -y install qt58base qt58declarative libphonon4qt5-dev libqt5sql5-sqlite
+    - sudo apt-get -y install qt58base qt58declarative libphonon4qt5-dev libqt5sql5-sqlite qt58translations
     - source /opt/qt58/bin/qt58-env.sh
 
 script:
+  - GOOGLE_API_KEY="AIzaSyDvKEyT_x8m26ErkqMtppH3tIpqRXm1JOc" # For testing; TODO: Use encrypted ENV from Travis CI
   - qmake PREFIX=/usr
   - make -j4
   - sudo apt-get -y install checkinstall
