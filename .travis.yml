@@ -36,6 +36,7 @@ script:
   - # VLC plugins need to go to usr/lib/vlc/plugins/
   - cp -r /usr/lib/vlc usr/lib/ # TODO: Selectively only copy the plugins that are actually needed
   - rm ./usr/lib/vlc/plugins/gui/libqt4_plugin.so # Otherwise segfaults; never mix Qt 4 and 5
+  - rm ./usr/lib/vlc/plugins/access/libaccess_smb_plugin.so # In an effort to not need libsmbclient and friends
   - cd ..
   - ./linuxdeployqt*.AppImage ./appdir/usr/bin/minitube -appimage 
   - curl --upload-file ./Minitube*.AppImage https://transfer.sh/Minitube-git.$(git rev-parse --short HEAD)-x86_64.AppImage 
