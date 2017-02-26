@@ -32,7 +32,7 @@ script:
   - cp -r /usr/lib/x86_64-linux-gnu/qt5/plugins/phonon4qt5_backend ./usr/plugins/
   - sed -i -e 's|/usr|/xxx|g' ./usr/lib/libphonon4qt5.so.4 # Otherwise it doesn't load from qt_prfxpath; FIXME
   - # Set rpath in phonon_vlc.so, fixes "phonon backend plugin could not be loaded"
-  - ./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/../../lib' ./usr/plugins/phonon4qt5_backend/phonon_vlc.so
+  - ../squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/../../lib' ./usr/plugins/phonon4qt5_backend/phonon_vlc.so
   - # VLC plugins need to go to usr/lib/vlc/plugins/
   - cp -r /usr/lib/vlc usr/lib/ # TODO: Selectively only copy the plugins that are actually needed
   - cd ..
