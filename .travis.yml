@@ -18,10 +18,12 @@ script:
   - sudo apt-get -y install checkinstall
   - sudo checkinstall --pkgname=app --pkgversion="1" --pkgrelease="1" --backup=no --fstrans=no --default --deldoc 
   - mkdir appdir ; cd appdir
-  - # "To be able to actually watch videos you need a working Phonon setup" - whatever this means
   - dpkg -x ../app_1-1_amd64.deb . ; find .
   - cp ./usr/share/applications/minitube.desktop .
-  - cp ./usr/share/icons/hicolor/256x256/apps/minitube.png .  
+  - cp ./usr/share/icons/hicolor/256x256/apps/minitube.png .
+  - # "To be able to actually watch videos you need a working Phonon setup" - whatever this means
+  - mkdir -p usr/lib/x86_64-linux-gnu/qt5/plugins/
+  - cp -r /usr/lib/x86_64-linux-gnu/qt5/plugins/phonon4qt5_backend ./usr/plugins/
   - cd .. 
   - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/3/linuxdeployqt-3-x86_64.AppImage" 
   - chmod a+x linuxdeployqt*.AppImage
