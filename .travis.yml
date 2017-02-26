@@ -13,7 +13,7 @@ install:
 
 script:
   - GOOGLE_API_KEY="AIzaSyDvKEyT_x8m26ErkqMtppH3tIpqRXm1JOc" # For testing; TODO: Use encrypted ENV from Travis CI
-  - qmake PREFIX=/usr
+  - qmake PREFIX=/usr "DEFINES += APP_GOOGLE_API_KEY=$GOOGLE_API_KEY"
   - make -j4
   - sudo apt-get -y install checkinstall
   - sudo checkinstall --pkgname=app --pkgversion="1" --pkgrelease="1" --backup=no --fstrans=no --default --deldoc 
