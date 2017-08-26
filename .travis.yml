@@ -15,11 +15,12 @@ script:
   - qmake "DEFINES+=APP_GOOGLE_API_KEY=AIzaSyBs1wuIgc-QDnk5u7OavF1loJVO0r89B4Y" PREFIX=/usr
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir install ; find appdir/
+  - cp $(which phonon4qt5_backend) appdir/usr/bin/
   - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt*.AppImage
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-  - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
-  - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage
+  - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -executable=appdir/usr/bin/phonon4qt5_backend
+  - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage -executable=appdir/usr/bin/phonon4qt5_backend
 
 after_success:
   - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
