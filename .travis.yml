@@ -12,7 +12,7 @@ install:
     - source /opt/qt*/bin/qt*-env.sh
 
 script:
-  - qmake PREFIX=/usr
+  - qmake "DEFINES+=APP_GOOGLE_API_KEY=AIzaSyBs1wuIgc-QDnk5u7OavF1loJVO0r89B4Y" PREFIX=/usr
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir install ; find appdir/
   - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
