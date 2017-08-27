@@ -15,10 +15,17 @@ script:
   - qmake "DEFINES+=APP_GOOGLE_API_KEY=AIzaSyBs1wuIgc-QDnk5u7OavF1loJVO0r89B4Y" PREFIX=/usr
   - make -j$(nproc)
   - make INSTALL_ROOT=appdir install ; find appdir/
-  - cp $(which phonon4qt5_backend) appdir/usr/bin/
   - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt*.AppImage
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
+  - cp -r /usr/lib/x86_64-linux-gnu/qt5/plugins/phonon4qt5_backend ./appdir/usr/plugins/
+  - # Set rpath in phonon_vlc.so, fixes "phonon backend plugin could not be loaded"
+  - # ../squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/../../lib' ./appdir/usr/plugins/phonon4qt5_backend/phonon_vlc.so
+  - # VLC plugins need to go to usr/lib/vlc/plugins/
+  - cp -r /usr/lib/vlc appdir/usr/lib/ # TODO: Selectively only copy the plugins that are actually needed
+  - rm ./appdir/usr/lib/vlc/plugins/gui/libqt4_plugin.so # Otherwise segfaults; never mix Qt 4 and 5
+  - rm ./appdir/usr/lib/vlc/plugins/access/libaccess_smb_plugin.so # In an effort to not need libsmbclient and friends
+
   - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -executable=appdir/usr/bin/phonon4qt5_backend
   - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage -executable=appdir/usr/bin/phonon4qt5_backend
 
