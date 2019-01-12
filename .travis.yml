@@ -12,12 +12,12 @@ install:
     - source /opt/qt58/bin/qt58-env.sh
 
 script:
-  - # GOOGLE_API_KEY is exported in Travis CI 
+  # GOOGLE_API_KEY is exported in Travis CI 
   - qmake PREFIX=/usr "DEFINES += APP_GOOGLE_API_KEY=$GOOGLE_API_KEY"
   - make -j4
   - sudo apt-get -y install checkinstall
   - sudo checkinstall --pkgname=app --pkgversion="1" --pkgrelease="1" --backup=no --fstrans=no --default --deldoc
-  - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/3/linuxdeployqt-3-x86_64.AppImage" 
+  - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage" 
   - chmod a+x linuxdeployqt*.AppImage
   - ./linuxdeployqt*.AppImage --appimage-extract
   - mkdir appdir ; cd appdir
@@ -26,16 +26,16 @@ script:
   - cp ./usr/share/icons/hicolor/256x256/apps/minitube.png .
   - cd .. 
   - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-  - # "To be able to actually watch videos you need a working Phonon setup" - whatever this means
+  # "To be able to actually watch videos you need a working Phonon setup" - whatever this means
   - cd appdir/
   - cp -r /usr/lib/x86_64-linux-gnu/qt5/plugins/phonon4qt5_backend ./usr/plugins/
   - sed -i -e 's|/usr|/xxx|g' ./usr/lib/libphonon4qt5.so.4 # Otherwise it doesn't load from qt_prfxpath; FIXME
-  - # Set rpath in phonon_vlc.so, fixes "phonon backend plugin could not be loaded"
-  - ../squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/../../lib' ./usr/plugins/phonon4qt5_backend/phonon_vlc.so
+  # Set rpath in phonon_vlc.so, fixes "phonon backend plugin could not be loaded"
+  # ../squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/../../lib' ./usr/plugins/phonon4qt5_backend/phonon_vlc.so
   - # VLC plugins need to go to usr/lib/vlc/plugins/
   - cp -r /usr/lib/vlc usr/lib/ # TODO: Selectively only copy the plugins that are actually needed
   - rm ./usr/lib/vlc/plugins/gui/libqt4_plugin.so # Otherwise segfaults; never mix Qt 4 and 5
   - rm ./usr/lib/vlc/plugins/access/libaccess_smb_plugin.so # In an effort to not need libsmbclient and friends
   - cd ..
-  - ./linuxdeployqt*.AppImage ./appdir/usr/bin/minitube -appimage 
+  - ./linuxdeployqt*.AppImage ./appdir/usr/bin/minitube -appimage -executable=./appdir/usr/plugins/phonon4qt5_backend/phonon_vlc.so
   - curl --upload-file ./Minitube*.AppImage https://transfer.sh/Minitube-git.$(git rev-parse --short HEAD)-x86_64.AppImage 
